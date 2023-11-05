@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'Materias.dart';
+
 class Practica1 extends StatefulWidget {
   const Practica1({super.key});
 
@@ -21,108 +23,36 @@ class _Practica1State extends State<Practica1> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.deepPurple,
+                color: Colors.blue,
               ),
-              child: Text(
-                'Practica 1',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.white,
+                    radius: 40,
+                    child: Image(
+                      image: AssetImage('assets/usuario.png'),
+                      height: 50,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'Bienvenido',
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
               ),
             ),
-            ListTile(
-              title: Text('Practica 1'),
-              onTap: () {
-                setState(() {
-                  titulo = 'Practica 1';
-                  indice = 0;
-                });
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text('Practica 2'),
-              onTap: () {
-                setState(() {
-                  titulo = 'Practica 2';
-                  indice = 1;
-                });
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text('Practica 3'),
-              onTap: () {
-                setState(() {
-                  titulo = 'Practica 3';
-                  indice = 2;
-                });
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text('Practica 4'),
-              onTap: () {
-                setState(() {
-                  titulo = 'Practica 4';
-                  indice = 3;
-                });
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text('Practica 5'),
-              onTap: () {
-                setState(() {
-                  titulo = 'Practica 5';
-                  indice = 4;
-                });
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text('Practica 6'),
-              onTap: () {
-                setState(() {
-                  titulo = 'Practica 6';
-                  indice = 5;
-                });
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text('Practica 7'),
-              onTap: () {
-                setState(() {
-                  titulo = 'Practica 7';
-                  indice = 6;
-                });
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text('Practica 8'),
-              onTap: () {
-                setState(() {
-                  titulo = 'Practica 8';
-                  indice = 7;
-                });
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text('Practica 9'),
-              onTap: () {
-                setState(() {
-                  titulo = 'Practica 9';
-                  indice = 8;
-                });
-                Navigator.pop(context);
-              },
-            ),
+            _itemMenu(Icons.book_online_outlined, 'Materias', 0),
+            _itemMenu(Icons.task, 'Tareas', 1),
+
           ],
         ),
       ),
@@ -133,18 +63,41 @@ class _Practica1State extends State<Practica1> {
     switch (indice) {
       case 0:
         {
-          return Container(
-            child: Center(
-              child: Text('Hola mundo'),
-            ),
+          return const Materias();
+        }
+        case 1:
+        {
+          return const Center(
+            child: Text('Hola mundo2'),
+          );
+        }
+        case 2:
+        {
+          return const Center(
+            child: Text('Hola mundo3'),
           );
         }
       default:
-        return Container(
-          child: Center(
-            child: Text('Hola mundo'),
-          ),
+        return const Center(
+          child: Text('Hola mundo default'),
         );
     }
   }
+
+  _itemMenu(IconData icono, String t, int i) {
+    return ListTile(
+      leading: Icon(icono),
+      title: Text(t),
+      onTap: () {
+        setState(() {
+          indice = i;
+          titulo = t;
+        });
+        Navigator.pop(context);
+      },
+    );
+  }
+
+
+
 }
