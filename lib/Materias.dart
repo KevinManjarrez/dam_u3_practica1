@@ -17,10 +17,20 @@ class _MateriasState extends State<Materias> {
           title: const Text('Materias'),
         ),
         body: dinamico(),
+      bottomNavigationBar: BottomNavigationBar(items: [
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
+        BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Materias'),
+        BottomNavigationBarItem(icon: Icon(Icons.task), label: 'Tareas'),
+      ], currentIndex: indice, onTap: (index) {
+        setState(() {
+          indice = index;
+        });
+      },
+      )
     );
   }
 
-  Widget dimamico() {
+  Widget dinamico() {
     switch (indice) {
       case 0:
         {
