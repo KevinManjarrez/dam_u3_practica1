@@ -1,6 +1,8 @@
+
 import 'Materia.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:dam_u3_practica1/Tarea.dart';
 
 class DB {
   static Future<Database> _abrirDB() async {
@@ -42,4 +44,25 @@ class DB {
     return db
         .delete("MATERIA", where: "IDMATERIA=?", whereArgs: [idMateria]);
   }
+
+  // En tu clase DB
+  static Future<List<Tarea>> obtenerTareasPorMateria(String idMateria) async {
+    Database db = await _abrirDB();
+    List<Map<String, dynamic>> resultado = await db.query(
+      "TAREA",
+      where: "idMateria = ?",
+      whereArgs: [idMateria],
+    );
+
+    return List.generate(resultado.length, (index) {
+      return Tarea(
+        idTarea: resultado[index]['idTarea'],
+        idMateria: resultado[index]['idMateria'],
+        nombre: resultado[index]['nombre'],
+        fechaEntrega: resultado[index]['fechaEntrega'],
+        descripcion: resultado[index]['descripcion'],
+      );
+    });
+  }
+
 }
