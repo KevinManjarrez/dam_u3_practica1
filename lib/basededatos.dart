@@ -64,7 +64,7 @@ class DB {
   // Inserta una tarea en la base de datos
   static Future<int> insertarTarea(Tarea tarea) async {
     Database db = await _abrirDB();
-    return db.insert("TAREA", tarea.toMap(),
+    return db.insert("TAREA", tarea.toJSON(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
   // En tu clase DB
@@ -78,7 +78,6 @@ class DB {
 
     return List.generate(resultado.length, (index) {
       return Tarea(
-        idTarea: resultado[index]['idTarea'],
         idMateria: resultado[index]['idMateria'],
         nombre: resultado[index]['nombre'],
         fechaEntrega: resultado[index]['fechaEntrega'],

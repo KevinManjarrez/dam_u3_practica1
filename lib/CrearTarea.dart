@@ -47,8 +47,7 @@ class _CrearTareaState extends State<CrearTarea> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Guardar la tarea en la base de datos
-          Tarea nuevaTarea = Tarea(
-            idTarea: 0, // Puedes generar un ID o utilizar el que prefieras
+          Tarea nuevaTarea = Tarea(// Puedes generar un ID o utilizar el que prefieras
             idMateria: widget.materia.idMateria,
             nombre: nombreController.text,
             fechaEntrega: fechaEntregaController.text,
