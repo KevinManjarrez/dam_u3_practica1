@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'Materia.dart';
 import 'Tarea.dart';
 import 'basededatos.dart';
+import 'CrearTarea.dart';
 
 class Tareas extends StatefulWidget {
   final Materia materia;
@@ -44,6 +45,23 @@ class _TareasState extends State<Tareas> {
           );
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Navegar a la pantalla de CrearTarea
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CrearTarea(materia: widget.materia),
+            ),
+          ).then((result) {
+            if (result == true) {
+              cargarTareas(); // Recargar las tareas después de crear una nueva
+            }
+          });
+        },
+        child: Icon(Icons.add),
+      ),
     );
   }
 }
+

@@ -5,15 +5,31 @@ import 'package:path/path.dart';
 import 'package:dam_u3_practica1/Tarea.dart';
 
 class DB {
+  // En el método _abrirDB
   static Future<Database> _abrirDB() async {
-    return openDatabase(join(await getDatabasesPath(), 'MateriasTareas.db'),
-        onCreate: (db, version) {
-          return db.execute("CREATE TABLE "
-              "MATERIA(IDMATERIA TEXT PRIMARY KEY,"
-              "NOMBRE TEXT,SEMESTRE TEXT,"
-              "DOCENTE TEXT)");
-        }, version: 1);
-  } //fin crear tabla
+    final databasePath = await getDatabasesPath();
+    final database = await openDatabase(
+      join(databasePath, 'MateriasTareas.db'),
+      onCreate: (db, version) async {
+        await db.execute("CREATE TABLE "
+            "MATERIA(IDMATERIA TEXT PRIMARY KEY,"
+            "NOMBRE TEXT,SEMESTRE TEXT,"
+            "DOCENTE TEXT)");
+
+        // Agrega la creación de la tabla "TAREA" con las columnas adecuadas
+        await db.execute("CREATE TABLE "
+            "TAREA(idTarea INTEGER PRIMARY KEY,"
+            "idMateria TEXT,"
+            "nombre TEXT,"
+            "fechaEntrega TEXT,"
+            "descripcion TEXT)");
+      },
+      version: 1,
+    );
+
+    return database;
+  }
+  //fin crear tabla
 
   static Future<int> insertar(Materia m) async {
     Database db = await _abrirDB();
@@ -45,6 +61,12 @@ class DB {
         .delete("MATERIA", where: "IDMATERIA=?", whereArgs: [idMateria]);
   }
 
+  // Inserta una tarea en la base de datos
+  static Future<int> insertarTarea(Tarea tarea) async {
+    Database db = await _abrirDB();
+    return db.insert("TAREA", tarea.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
+  }
   // En tu clase DB
   static Future<List<Tarea>> obtenerTareasPorMateria(String idMateria) async {
     Database db = await _abrirDB();
@@ -63,6 +85,13 @@ class DB {
         descripcion: resultado[index]['descripcion'],
       );
     });
+  }
+
+  // Mostrar todas las tareas (solo para depuración)
+  static Future<void> mostrarTodasTareas() async {
+    Database db = await _abrirDB();
+    List<Map<String, dynamic>> resultado = await db.query("TAREA");
+    print(resultado);
   }
 
 }
