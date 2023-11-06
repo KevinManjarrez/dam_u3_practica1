@@ -36,9 +36,9 @@ class _MateriasState extends State<Materias> {
         ),
         body: dinamico(),
       bottomNavigationBar: BottomNavigationBar(items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
-        BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Materias'),
-        BottomNavigationBarItem(icon: Icon(Icons.task), label: 'Tareas'),
+        BottomNavigationBarItem(icon: Icon(Icons.subject), label: 'Materias'),
+        BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Agregar'),
+        BottomNavigationBarItem(icon: Icon(Icons.edit), label: 'Editar'),
       ], currentIndex: _index, onTap: (index) {
         setState(() {
           _index = index;
@@ -109,7 +109,7 @@ class _MateriasState extends State<Materias> {
       children: [
         TextField(
           controller: idMateria,
-          decoration: const InputDecoration(labelText: "Num Control:"),
+          decoration: const InputDecoration(labelText: "idMateria:"),
         ),
         const SizedBox(
           height: 10,
@@ -123,15 +123,14 @@ class _MateriasState extends State<Materias> {
         ),
         TextField(
           controller: semestre,
-          decoration: const InputDecoration(labelText: "Carrera:"),
+          decoration: const InputDecoration(labelText: "Semestre:"),
         ),
         const SizedBox(
           height: 10,
         ),
         TextField(
           controller: docente,
-          decoration: const InputDecoration(labelText: "Semestre:"),
-          keyboardType: TextInputType.number,
+          decoration: const InputDecoration(labelText: "Docente:"),
         ),
         const SizedBox(
           height: 10,
