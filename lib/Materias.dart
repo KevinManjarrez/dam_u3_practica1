@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'Materia.dart';
 import 'basededatos.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'Tareas.dart';
 
 class Materias extends StatefulWidget {
   const Materias({super.key});
@@ -22,6 +23,7 @@ class _MateriasState extends State<Materias> {
   Materia matGlobal =
       Materia(idMateria: "", nombre: "", semestre: "", docente: "");
   List<Materia> data = [];
+
   void actualizarLista() async {
     List<Materia> temp = await DB.mostrarTodos();
     setState(() {
@@ -81,30 +83,39 @@ class _MateriasState extends State<Materias> {
 
   Widget mostrarLista() {
     return ListView.builder(
-        itemCount: data.length,
-        itemBuilder: (context, indice) {
-          return ListTile(
-            title: Text(data[indice].nombre),
-            subtitle: Text(data[indice].docente),
-            leading: CircleAvatar(
-              radius: 15,
-              child: Text(data[indice].nombre),
-            ),
-            trailing: IconButton(
-              onPressed: () {
-                DB.eliminar(data[indice].idMateria).then((value) {
-                  actualizarLista();
+      itemCount: data.length,
+      itemBuilder: (context, indice) {
+        return ListTile(
+          title: Text(data[indice].nombre),
+          subtitle: Text(data[indice].docente),
+          leading: CircleAvatar(
+            radius: 15,
+            child: Text(data[indice].nombre),
+          ),
+          trailing: IconButton(
+            onPressed: () {
+              DB.eliminar(data[indice].idMateria).then((value) {
+                setState(() {
+                  titulo = "Se eliminó!";
                 });
-              },
-              icon: const Icon(Icons.delete),
-            ),
-            onTap: () {
-              matGlobal = data[indice];
-              actualizar();
+                actualizarLista();
+              });
             },
-          );
-        });
+            icon: Icon(Icons.delete),
+          ),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Tareas(materia: data[indice]),
+              ),
+            );
+          },
+        );
+      },
+    );
   }
+
 
   Widget capturar() {
     return ListView(

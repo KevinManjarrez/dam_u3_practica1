@@ -51,7 +51,7 @@ class _Practica1State extends State<Practica1> {
               ),
             ),
             _itemMenu(Icons.book_online_outlined, 'Materias', 0),
-            _itemMenu(Icons.task, 'Tareas', 1),
+            _itemMenu(Icons.copyright, 'Acerca de', 1),
 
           ],
         ),
@@ -68,13 +68,9 @@ class _Practica1State extends State<Practica1> {
         case 1:
         {
           return const Center(
-            child: Text('Hola mundo2'),
-          );
-        }
-        case 2:
-        {
-          return const Center(
-            child: Text('Hola mundo3'),
+            child: Text('App creada por\n'
+                'Alexis Moreno Jauregui\n'
+                 'Kevin Aziel Manjarrez Manzano'),
           );
         }
       default:
