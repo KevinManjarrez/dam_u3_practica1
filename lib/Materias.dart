@@ -150,15 +150,12 @@ class _MateriasState extends State<Materias> {
                       docente: docente.text);
 
                   DB.insertar(temporal).then((value) {
-                    setState(() {
-                      _index = 0;
-                    });
+                    mostrarToast("Se inserto con exito");
                   });
                   idMateria.text = "";
                   nombre.text = "";
                   semestre.text = "";
                   docente.text = "";
-                  mostrarToast("Se inserto con exito");
                   actualizarLista();
                 },
                 child: const Text("Insertar")),
