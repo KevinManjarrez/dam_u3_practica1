@@ -19,33 +19,41 @@ class _MateriasState extends State<Materias> {
   final semestre = TextEditingController();
   final docente = TextEditingController();
 
-  Materia matGlobal  =
-  Materia(idMateria: "", nombre: "", semestre: "", docente: "");
-  List<Materia> data= [];
+  Materia matGlobal =
+      Materia(idMateria: "", nombre: "", semestre: "", docente: "");
+  List<Materia> data = [];
   void actualizarLista() async {
     List<Materia> temp = await DB.mostrarTodos();
     setState(() {
       data = temp;
     });
   }
+
+  void initState() {
+    super.initState();
+    actualizarLista();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(titulo)
-        ),
+        appBar: AppBar(title: Text(titulo)),
         body: dinamico(),
-      bottomNavigationBar: BottomNavigationBar(items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.subject), label: 'Materias'),
-        BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Agregar'),
-        BottomNavigationBarItem(icon: Icon(Icons.edit), label: 'Editar'),
-      ], currentIndex: _index, onTap: (index) {
-        setState(() {
-          _index = index;
-        });
-      },
-      )
-    );
+        bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.subject), label: 'Materias'),
+            BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Agregar'),
+            BottomNavigationBarItem(icon: Icon(Icons.edit), label: 'Editar'),
+          ],
+          currentIndex: _index,
+          onTap: (index) {
+            setState(() {
+              _index = index;
+            });
+          },
+        ));
   }
 
   Widget dinamico() {
@@ -85,9 +93,6 @@ class _MateriasState extends State<Materias> {
             trailing: IconButton(
               onPressed: () {
                 DB.eliminar(data[indice].idMateria).then((value) {
-                  setState(() {
-                    titulo = "Se elimino!";
-                  });
                   actualizarLista();
                 });
               },
@@ -95,9 +100,7 @@ class _MateriasState extends State<Materias> {
             ),
             onTap: () {
               matGlobal = data[indice];
-              setState(() {
-                _index = 2;
-              });
+              actualizar();
             },
           );
         });
@@ -147,6 +150,9 @@ class _MateriasState extends State<Materias> {
                       docente: docente.text);
 
                   DB.insertar(temporal).then((value) {
+                    setState(() {
+                      _index = 0;
+                    });
                   });
                   idMateria.text = "";
                   nombre.text = "";
@@ -169,6 +175,86 @@ class _MateriasState extends State<Materias> {
     );
   }
 
+  void actualizar() {
+    nombre.text = matGlobal.nombre;
+    semestre.text = matGlobal.semestre;
+    docente.text = matGlobal.docente;
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        elevation: 5,
+        builder: (builder) {
+          return Container(
+            padding: EdgeInsets.only(
+                top: 15,
+                left: 30,
+                right: 30,
+                bottom: MediaQuery.of(context).viewInsets.bottom + 40),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: nombre,
+                  decoration: const InputDecoration(
+                    labelText: "Nombre: ",
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextField(
+                  controller: semestre,
+                  decoration: const InputDecoration(labelText: "Semestre: "),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextField(
+                  controller: docente,
+                  decoration: const InputDecoration(labelText: "Docente:"),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        matGlobal.nombre = nombre.text;
+                        matGlobal.semestre = semestre.text;
+                        matGlobal.docente = docente.text;
+                        DB.actualizar(matGlobal).then((value) {
+                          if (value > 0) {
+                            mostrarToast("Se actualizo con exito");
+                            nombre.text = "";
+                            semestre.text = "";
+                            docente.text = "";
+                            matGlobal = Materia(
+                                idMateria: "",
+                                nombre: "",
+                                semestre: "",
+                                docente: "");
+                          }
+                        });
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Actualizar"),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Cerrar"),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
   void mostrarToast(String texto) {
     Fluttertoast.showToast(
       msg: texto,
@@ -180,9 +266,4 @@ class _MateriasState extends State<Materias> {
       fontSize: 16.0,
     );
   }
-
-
-
-
-
 }
