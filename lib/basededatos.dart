@@ -16,21 +16,19 @@ class DB {
             "NOMBRE TEXT,SEMESTRE TEXT,"
             "DOCENTE TEXT)");
 
-        // Corrección: Agrega la creación de la tabla "TAREA" con la restricción de clave foránea adecuada
+        // Agrega la creación de la tabla "TAREA" con las columnas adecuadas
         await db.execute("CREATE TABLE "
-            "TAREA(IDTAREA INTEGER PRIMARY KEY AUTOINCREMENT,"
-            "IDMATERIA TEXT,"
-            "NOMBRE TEXT,"
-            "FECHAENTREGA TEXT,"
-            "DESCRIPCION TEXT,"
-            "FOREIGN KEY (IDMATERIA) REFERENCES MATERIA(IDMATERIA))");
+            "TAREA(idTarea INTEGER PRIMARY KEY,"
+            "idMateria TEXT,"
+            "nombre TEXT,"
+            "fechaEntrega TEXT,"
+            "descripcion TEXT)");
       },
       version: 1,
     );
 
     return database;
   }
-
   //fin crear tabla
 
   static Future<int> insertar(Materia m) async {
@@ -64,11 +62,11 @@ class DB {
   }
 
   // Inserta una tarea en la base de datos
-  static Future<int> insertarTarea(Tarea t) async {
+  static Future<int> insertarTarea(Tarea tarea) async {
     Database db = await _abrirDB();
-    return db.insert("TAREA", t.toJSON(),
+    return db.insert("TAREA", tarea.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
-  } //fin insertar
+  }
   // En tu clase DB
   static Future<List<Tarea>> obtenerTareasPorMateria(String idMateria) async {
     Database db = await _abrirDB();
@@ -80,6 +78,7 @@ class DB {
 
     return List.generate(resultado.length, (index) {
       return Tarea(
+        idTarea: resultado[index]['idTarea'],
         idMateria: resultado[index]['idMateria'],
         nombre: resultado[index]['nombre'],
         fechaEntrega: resultado[index]['fechaEntrega'],
