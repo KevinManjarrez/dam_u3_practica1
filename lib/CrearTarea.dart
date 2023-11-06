@@ -8,7 +8,7 @@ import 'Tareas.dart'; // Asegúrate de importar la pantalla de Tareas
 class CrearTarea extends StatefulWidget {
   final Materia materia;
 
-  CrearTarea({required this.materia});
+  const CrearTarea({super.key, required this.materia});
 
   @override
   _CrearTareaState createState() => _CrearTareaState();
@@ -31,15 +31,15 @@ class _CrearTareaState extends State<CrearTarea> {
           children: [
             TextField(
               controller: nombreController,
-              decoration: InputDecoration(labelText: 'Nombre de la tarea'),
+              decoration: const InputDecoration(labelText: 'Nombre de la tarea'),
             ),
             TextField(
               controller: fechaEntregaController,
-              decoration: InputDecoration(labelText: 'Fecha de entrega'),
+              decoration: const InputDecoration(labelText: 'Fecha de entrega'),
             ),
             TextField(
               controller: descripcionController,
-              decoration: InputDecoration(labelText: 'Descripción de la tarea'),
+              decoration: const InputDecoration(labelText: 'Descripción de la tarea'),
             ),
           ],
         ),
@@ -61,6 +61,7 @@ class _CrearTareaState extends State<CrearTarea> {
               timeInSecForIosWeb: 2, // Duración del mensaje
             );
 
+
             // Después de agregar la tarea, navegar a la pantalla de Tareas
             Navigator.push(
               context,
@@ -70,7 +71,7 @@ class _CrearTareaState extends State<CrearTarea> {
             );
           });
         },
-        child: Icon(Icons.save),
+        child: const Icon(Icons.save),
       ),
     );
   }

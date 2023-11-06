@@ -31,6 +31,7 @@ class _MateriasState extends State<Materias> {
     });
   }
 
+  @override
   void initState() {
     super.initState();
     actualizarLista();
@@ -101,7 +102,7 @@ class _MateriasState extends State<Materias> {
                 actualizarLista();
               });
             },
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
           ),
           onTap: () {
             Navigator.push(

@@ -7,7 +7,7 @@ import 'CrearTarea.dart';
 class Tareas extends StatefulWidget {
   final Materia materia;
 
-  Tareas({required this.materia});
+  const Tareas({super.key, required this.materia});
 
   @override
   _TareasState createState() => _TareasState();
@@ -16,17 +16,18 @@ class Tareas extends StatefulWidget {
 class _TareasState extends State<Tareas> {
   List<Tarea> tareas = [];
 
-  @override
-  void initState() {
-    super.initState();
-    cargarTareas();
-  }
 
   void cargarTareas() async {
     List<Tarea> tareasCargadas = await DB.obtenerTareasPorMateria(widget.materia.idMateria);
     setState(() {
       tareas = tareasCargadas;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    cargarTareas();
   }
 
   @override
@@ -41,6 +42,10 @@ class _TareasState extends State<Tareas> {
           return ListTile(
             title: Text(tareas[indice].nombre),
             subtitle: Text('Fecha de entrega: ${tareas[indice].fechaEntrega}'),
+            leading: CircleAvatar(
+              radius: 15,
+              child: Text(tareas[indice].idMateria),
+            ),
             // Agregar más detalles de la tarea si es necesario.
           );
         },
@@ -59,7 +64,7 @@ class _TareasState extends State<Tareas> {
             }
           });
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

@@ -1,4 +1,3 @@
-
 import 'Materia.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -18,17 +17,19 @@ class DB {
 
         // Agrega la creación de la tabla "TAREA" con las columnas adecuadas
         await db.execute("CREATE TABLE "
-            "TAREA(idTarea INTEGER PRIMARY KEY,"
-            "idMateria TEXT,"
-            "nombre TEXT,"
-            "fechaEntrega TEXT,"
-            "descripcion TEXT)");
+            "TAREA(IDTAREA INTEGER PRIMARY KEY,"
+            "IDMATERIA TEXT,"
+            "NOMBRE TEXT,"
+            "FECHAENTREGA TEXT,"
+            "DESCRIPCION TEXT,"
+            "FOREIGN KEY(IDMATERIA) REFERENCES MATERIA(IDMATERIA))");
       },
       version: 1,
     );
 
     return database;
   }
+
   //fin crear tabla
 
   static Future<int> insertar(Materia m) async {
@@ -61,21 +62,22 @@ class DB {
         .delete("MATERIA", where: "IDMATERIA=?", whereArgs: [idMateria]);
   }
 
+  //----------------------------------------------------------------------------------------------------
   // Inserta una tarea en la base de datos
   static Future<int> insertarTarea(Tarea tarea) async {
     Database db = await _abrirDB();
     return db.insert("TAREA", tarea.toJSON(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
+
   // En tu clase DB
   static Future<List<Tarea>> obtenerTareasPorMateria(String idMateria) async {
     Database db = await _abrirDB();
     List<Map<String, dynamic>> resultado = await db.query(
       "TAREA",
-      where: "idMateria = ?",
+      where: "IDMATERIA = ?",
       whereArgs: [idMateria],
     );
-
     return List.generate(resultado.length, (index) {
       return Tarea(
         idMateria: resultado[index]['idMateria'],
